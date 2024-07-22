@@ -43,7 +43,7 @@ class ReservaController extends Controller
         Log::info($reserva);
 
         // Send email to admin for approval
-        Mail::to('herbethlucas0@gmail.com')->send(new \App\Mail\ReservaSolicitada($reserva));
+        //Mail::to('herbethlucas0@gmail.com')->send(new \App\Mail\ReservaSolicitada($reserva));
 
         return response()->json($reserva, 201);
     }
