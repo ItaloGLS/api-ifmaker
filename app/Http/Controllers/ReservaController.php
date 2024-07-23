@@ -39,7 +39,7 @@ class ReservaController extends Controller
 
         $reserva = Reserva::create($data);
 
-        SendReservaSolicitadaEmail::dispatch($reserva);
+        //SendReservaSolicitadaEmail::dispatch($reserva);
 
         return response()->json($reserva, 201);
     }
