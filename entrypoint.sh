@@ -15,13 +15,6 @@ php artisan db:seed --force
 chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Inicia o PHP-FPM
-echo "Iniciando o PHP-FPM..."
-php-fpm &
-
-# Inicia o worker de filas (opcional)
-echo "Iniciando o worker de filas..."
-php artisan queue:work
-
-# Mantém o contêiner em execução
-wait
+# Inicia o Supervisor
+echo "Iniciando o Supervisor..."
+exec supervisord -c /etc/supervisor/conf.d/supervisor.conf
