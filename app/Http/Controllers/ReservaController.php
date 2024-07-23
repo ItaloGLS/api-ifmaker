@@ -1,25 +1,24 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Reserva;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendReservaSolicitadaEmail;
+use App\Jobs\SendReservaAprovadaEmail;
+use App\Jobs\SendReservaRecusadaEmail;
 
 class ReservaController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->has('filter')) {
-
             return Reserva::where('status', $request->input('filter'))->get();
         }
 
-
         return Reserva::where('status', '!=', 'finalizado')->get();
     }
-
 
     public function store(Request $request)
     {
@@ -40,10 +39,7 @@ class ReservaController extends Controller
 
         $reserva = Reserva::create($data);
 
-        Log::info($reserva);
-
-        // Send email to admin for approval
-        //Mail::to('herbethlucas0@gmail.com')->send(new \App\Mail\ReservaSolicitada($reserva));
+        SendReservaSolicitadaEmail::dispatch($reserva);
 
         return response()->json($reserva, 201);
     }
@@ -64,9 +60,9 @@ class ReservaController extends Controller
         $reserva->update($data);
 
         if ($data['status'] == 'aprovado') {
-            Mail::to($reserva->email)->send(new \App\Mail\ReservaAprovada($reserva));
+            SendReservaAprovadaEmail::dispatch($reserva);
         } elseif ($data['status'] == 'recusado') {
-            Mail::to($reserva->email)->send(new \App\Mail\ReservaRecusada($reserva));
+            SendReservaRecusadaEmail::dispatch($reserva);
         }
 
         return response()->json($reserva);

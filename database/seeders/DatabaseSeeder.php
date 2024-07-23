@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Factory as FakerFactory;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,10 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         \App\Models\User::factory()->create([
-             'name' => 'admin',
-             'email' => 'admin@admin.br',
-             'password' => 'admin123'
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@admin.br',
+            'password' => bcrypt('admin123')
         ]);
     }
 }
