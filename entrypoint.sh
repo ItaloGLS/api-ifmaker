@@ -8,10 +8,8 @@ composer install --optimize-autoloader
 echo "Executando as migrações..."
 php artisan migrate --force
 
-# Executa o seeding (opcional)
-echo "Executando o seeding..."
-php artisan db:seed --force
 
+# Ajusta permissões para o diretório storage e bootstrap/cache
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
@@ -21,7 +19,11 @@ php-fpm &
 
 # Inicia o worker de filas (opcional)
 echo "Iniciando o worker de filas..."
-php artisan queue:work
+php artisan queue:work &
+
+# Inicia o Nginx
+echo "Iniciando o Nginx..."
+service nginx start
 
 # Mantém o contêiner em execução
 wait

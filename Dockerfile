@@ -1,8 +1,9 @@
 # Usa a imagem oficial do PHP com FPM
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
-# Instala dependências do sistema e PHP
+# Instala dependências do sistema, PHP e Nginx
 RUN apt-get update && apt-get install -y \
+    nginx \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -23,18 +24,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copia os arquivos da aplicação para o contêiner
 COPY . .
 
+# Copia o arquivo de configuração do Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copia o script de entrada
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Adiciona permissões de execução ao script de entrada
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Cria o diretório de logs e define permissões
+RUN mkdir -p /var/log/nginx && chown -R www-data:www-data /var/log/nginx
 
-# Instala as dependências do Composer
-RUN composer install --no-dev --optimize-autoloader
+# Expõe a porta 80 para o Nginx
+EXPOSE 80
 
-# Configura permissões para o diretório storage e bootstrap/cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expõe a porta 9000 para o PHP-FPM
-EXPOSE 9000
-
-# Comando para iniciar o PHP-FPM
+# Define o script de entrada como o comando de inicialização
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
