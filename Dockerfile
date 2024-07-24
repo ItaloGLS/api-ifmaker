@@ -1,9 +1,10 @@
 # Usa a imagem oficial do PHP com FPM
 FROM php:8.2-fpm
 
-# Instala dependências do sistema, PHP e Nginx
+# Instala dependências do sistema, PHP, Nginx e Supervisor
 RUN apt-get update && apt-get install -y \
     nginx \
+    supervisor \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -29,6 +30,9 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copia o script de entrada
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Copia o arquivo de configuração do Supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Adiciona permissões de execução ao script de entrada
 RUN chmod +x /usr/local/bin/entrypoint.sh
